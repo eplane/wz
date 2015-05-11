@@ -88,7 +88,7 @@ $autoload['drivers'] = array('session','cache');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'efile');
+$autoload['helper'] = array('url', 'efile', 'language');
 
 
 /*
@@ -120,7 +120,7 @@ $autoload['config'] = array('config_external');
 |
 */
 
-$autoload['language'] = array('error');
+$autoload['language'] = array('error', 'form');
 
 
 /*

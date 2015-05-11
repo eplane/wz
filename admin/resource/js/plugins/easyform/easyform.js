@@ -10,7 +10,7 @@
  *      char-normal         英文、数字、下划线
  *      char-chinese        中文、英文、数字、下划线、中文标点符号
  *      char-english        英文、数字、下划线、英文标点符号
- *      length:1 10 / length:4
+ *      length:1 10 / length:4      能够识别汉字等宽字符长度
  *      equal:xxx                               等于某个对象的值，冒号后是jq选择器语法
  *      ajax:fun()
  *      real-time                               实时检查
@@ -42,6 +42,7 @@
  * 4. 2014-11-20 requirement list 3支持了ajax异步验证方式。
  * 5. 2014-11-21 requirement list 5完成
  * 6. 2015-4-12 requirement list 8完成
+ * 7. 2015-5-11 正确识别汉字长度
  *
  * ------ DEMO  -------------------------------------------------
  * <input type="text" id="demo"  easyform="length:4 16;number;" message-number="必须是数字" message-length="长度错误">
@@ -389,7 +390,9 @@
                 //如果长度设置为 length:6 这样的格式
                 if (range.length == 1) range[1] = range[0];
 
-                if (v.length < range[0] || v.length > range[1])
+                var len = v.replace(/[^\x00-\xff]/g,"aa").length;
+
+                if (len < range[0] || len > range[1])
                     return ei._error("length");
                 else
                     return ei._success_rule("length");
@@ -1091,114 +1094,4 @@
         return eif.init();
     };
 
-})(jQuery, window, document);
-
-
-//easybox 弹出提示框
-(function ($, window, document, undefined) {
-    $("body").append('<div id="easybox_mask"></div>');
-
-    var easybox_mask = $("#easybox_mask");
-
-    var mask_width = $(window).innerWidth();
-    var mask_height = $(window).innerHeight();
-    var mask_left = 0;
-    var mask_top = 0;
-
-    easybox_mask.css({
-        position: "absolute",
-        "display": "none",
-        left: mask_left,
-        top: mask_top,
-        width: mask_width,
-        height: mask_height,
-        background: "#000",
-        opacity: "0.65",
-        filter: "alpha(opacity=65)"
-    });
-
-    var _easybox = function (child, opt) {
-        this.child = child; //内容
-
-        this.id = "_easybox_" + this.child.attr("id");
-
-        this.child.wrap('<div id=' + this.id + ' style="display:none;"></div>');
-
-        this.child.show();
-
-        this.obj = $("#" + this.id);
-
-        //将对话框内容移动到body下，防止带有层次的样式表干扰位置
-        $(document.body).append(this.obj);
-
-        this.defaults = {
-            model: true      //  true / false
-        };
-
-        this.options = $.extend({}, this.defaults, opt);
-    };
-
-    _easybox.prototype = {
-
-        init: function () {
-            this.obj.css({
-                "position": "absolute",
-                "margin": "0 auto 0 auto",
-                "z-index": 100
-            });
-
-            if (true == this.options.model) {
-                this.mask = null;
-            }
-
-            return this;
-        },
-
-        _pos: function () {
-            var pos = document.body.scrollTop;
-
-            var w = this.obj.outerWidth();
-            var h = this.obj.outerHeight();
-
-            easybox_mask.css({
-                "top": pos
-            });
-
-            this.obj.css({
-                "left": (mask_width - w) / 2,
-                "top": (mask_height - h) / 2 + pos
-            });
-        },
-
-        show: function () {
-            var eb = this;
-
-            $(window).scroll(function () {
-                eb._pos();
-            });
-
-            this._pos();
-
-            if (true == this.options.model) {
-                easybox_mask.show();
-            }
-
-            this.obj.show();
-        },
-
-        close: function () {
-            if (true == this.options.model)
-                easybox_mask.hide();
-
-            $(window).unbind("scroll");
-
-            this.obj.hide();
-        }
-    };
-
-    $.fn.easybox = function (options) {
-        var box = new _easybox(this, options);
-
-        return box.init();
-    };
 })(jQuery, window, document);

@@ -9,37 +9,25 @@ class m_user extends m_base
         parent::__construct();
     }
 
+    /**
+     * @param $uid
+     * @param $password
+     * @return bool
+     */
     public function login_admin($uid, $password)
     {
-        $user = $this->edb->select_row('user', '`uid` = "' . $uid . '" AND `password` = "' . md5($password) . '"', '`id`,`uid`,`email`,`mobile`,`status`');
+        /*
+         * 获得用户数据，不能使用缓存数据
+         * */
+        $data = $this->edb->select_row('user', '`uid` = "' . $uid . '" AND `psw` = "' . md5($password) . '" AND `status`="normal"', '`id`,`uid`,`email`,`mobile`,`status`');
 
-        if (NULL != $user)
-        {
-            //查询是否是公司职员，如果不是，拒绝登录后台
-            $stuff = $this->edb->get_one(TRUE, 'stuff', '`user` = ' . $user['id']);
+        $user = NULL;
 
-            if (NULL != $stuff)
-            {
-                $user_info = $this->edb->get_one(TRUE, 'user_info', '`id` = ' . $user['id']);
+        //获得角色列表
 
-                $user = array_merge($user, $user_info);
+        //判断是否拥有合法的角色
 
-                //保存登录用户信息
-                $this->session->user = $user;
-
-                //保存用户职务信息
-                $this->session->stuff = $stuff;
-
-                $this->load->model('m_entity', 'mentity');
-
-                $this->session->entity = $this->mentity->get_this(TRUE);
-            }
-            else
-            {
-                //如果不是任何公司的职员
-                $user = NULL;
-            }
-        }
+        //获得用户数据
 
         return $user != NULL;
     }
@@ -93,5 +81,10 @@ class m_user extends m_base
         $id = $this->edb->select_one('user', '`uid`="' . $str . '" OR `mobile`="' . $str . '" OR `email`="' . $str . '"', 'id');
 
         return $this->get_user(FALSE, $id);
+    }
+
+    public function roles($user)
+    {
+
     }
 }

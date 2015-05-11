@@ -12,22 +12,22 @@ $config = Array(
     'login/index' => Array(
         array(
             'field' => 'uid',
-            'label' => '用户名',
+            'label' => lang('form_word_uid'),
             'rules' => 'trim|required|min_length[4]|max_length[20]',
             'errors' => array(
-                'required' => '%s 不能为空',
-                'min_length' => '%s 必须为4位以上的英文字母',
-                'max_length' => '%s 必须为20位以下的英文字母'
+                'required' => '%s ' . lang('form_error_null'),
+                'min_length' => '%s' . lang('form_error_tip_1'),
+                'max_length' => '%s' . lang('form_error_tip_1')
             )
         ),
         array(
             'field' => 'password',
-            'label' => '密码',
-            'rules' => 'trim|required|min_length[4]|max_length[20]',
+            'label' =>  lang('form_word_psw'),
+            'rules' => 'trim|required|min_length[6]|max_length[20]',
             'errors' => array(
-                'required' => '%s 不能为空',
-                'min_length' => '%s 必须为4位以上的英文字母',
-                'max_length' => '%s 必须为20位以下的英文字母'
+                'required' => '%s ' . lang('form_error_null'),
+                'min_length' => '%s' . lang('form_error_tip_2'),
+                'max_length' => '%s' . lang('form_error_tip_2')
             )
         )
     ),

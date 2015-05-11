@@ -14,6 +14,7 @@ $config['other_path']['css']      = 'resource/css/';
 $config['other_path']['less']     = 'resource/less/';
 
 $config['other_path']['common-js']     = '../resource/js/';
+$config['other_path']['common-css']     = '../resource/css/';
 
 $config['captcha_path'] = '../resource/temp/';
 

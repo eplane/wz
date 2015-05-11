@@ -23,6 +23,7 @@ class login extends CI_Controller
         }
         else
         {
+            echo 111;
             //redirect(base_url() . 'role.html');
         }
     }
