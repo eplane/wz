@@ -1,2 +1,1 @@
-# wz
 readme
