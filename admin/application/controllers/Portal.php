@@ -2,7 +2,7 @@
 
 require_once('client_base.php');
 
-class portal extends client_base
+class Portal extends client_base
 {
     public function __construct()
     {
