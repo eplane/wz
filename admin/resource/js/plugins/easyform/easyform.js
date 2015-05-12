@@ -147,6 +147,7 @@
             this.counter = 0;
             this.is_submit = submit;
 
+            //如果没有需要判断的控件
             if (this.inputs.length == 0) {
                 if (!!this.success)    //成功事件
                     this.success();
@@ -155,6 +156,7 @@
                     this.form.submit();
             }
 
+            //执行per_validation事件
             if (this.per_validation) {
                 this.is_submit = this.per_validation();
             }
@@ -788,7 +790,6 @@
     };
 
 })(jQuery, window, document);
-
 
 //easydatetime 日期时间控件
 (function ($, window, document, undefined) {
