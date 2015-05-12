@@ -29,40 +29,38 @@
 <body>
 
 <div class="form-box" id="login-box">
-    <div class="header">欢迎登录</div>
+    <div class="header">登录</div>
     <?php echo validation_errors('<div class="callout callout-danger" style="margin: 0;">', '</div>'); ?>
     <?php echo form_open(base_url() . 'login.html', Array('id' => 'form')); ?>
     <div class="body bg-gray">
         <div class="form-group">
             <input type="text" id="uid" name="uid" class="form-control"
-                   placeholder="<?php echo lang('form_word_uid') ?>"
-                   value="<?php echo set_value('uid'); ?>" easyform="char-normal;length:4 20;"
-                   message="<?php echo lang('form_tip-1') ?>"/>
+                   placeholder="请输入用户名" message="必须为4-20位英文字母"
+                   value="<?php echo set_value('uid'); ?>" easyform="char-normal;length:4 20;"/>
         </div>
         <div class="form-group">
             <input type="password" id="password" name="password" class="form-control"
-                   placeholder="<?php echo lang('form_word_psw') ?>"
-                   easyform="length:6 20;" message="<?php echo lang('form_tip-2') ?>"/>
+                   placeholder="请输入密码"
+                   easyform="length:6 20;" message="必须为6-20位英文字母"/>
         </div>
     </div>
     <div class="footer bg-gray">
-        <input type="submit" class="btn bg-olive btn-block" value="<?php echo lang('form_word_login') ?>">
+        <input type="submit" id="bt-submit" class="btn bg-olive btn-block" value="登录">
 
-        <p><a href="javascript:void(0);">忘记密码</a></p>
+        <p><a href="javascript:void(0);" id="forget">忘记密码</a></p>
 
-        <p><a href="javascript:void(0);" class="text-center">注册</a></p>
+        <p><a href="javascript:void(0);" class="text-center" id="regist">注册</a></p>
     </div>
     </form>
 </div>
-
 
 <!-- jQuery 2.1.3 -->
 <script src="<?php echo base_url() . get_path('common-js'); ?>jquery-2.1.3.min.js"></script>
 <!-- Bootstrap -->
 <script src="<?php echo base_url() . get_path('common-js'); ?>bootstrap.min.js" type="text/javascript"></script>
 
-<script src="<?php echo base_url() . get_path('common-js'); ?>jquery.language/jquery.language.js"
-        type="text/javascript"></script>
+<!--<script src="<?php /*echo base_url() . get_path('common-js'); */?>jquery.language/jquery.language.js"
+        type="text/javascript"></script>-->
 
 <script src="<?php echo base_url() . get_path('js'); ?>plugins/easyform/easyform.js" type="text/javascript"></script>
 
@@ -72,7 +70,29 @@
 
         $("#form").easyform();
 
-        $.prototype.easylanguage({language: "ch", url: "<?php echo base_url() . get_path('common-js'); ?>jquery.language/"});
+        //初始化语言
+        /*var lang = $.prototype.easylanguage({
+            language: "ch",
+            page: "login",
+            url: "<?php echo base_url() . get_path('common-js'); ?>jquery.language/",
+
+            success: function (data) {
+                $uid = $("#uid");
+                $password = $("#password");
+
+                $(".header").html(data["login"]);
+                $uid.attr("placeholder", data["uid-placeholder"]);
+                $uid.attr("message", data["uid-message"]);
+                $password.attr("placeholder", data["password-placeholder"]);
+                $password.attr("message", data["password-message"]);
+                $("#bt-submit").val(data["login"]);
+                $("a#forget").html(data["forget"]);
+                $("a#regist").html(data["regist"]);
+            }
+        });
+
+        lang.load("en");*/
+
     });
 
 </script>
