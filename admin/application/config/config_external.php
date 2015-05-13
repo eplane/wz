@@ -22,7 +22,7 @@ $config['captcha_path'] = '../resource/temp/';
 $config['cache_driver'] = 'file';   //缓冲驱动
 
 //网站 title
-$config['title'] = '微站';   //系统默认标题
+$config['title'] = '测试';   //系统默认标题
 
 //单位 秒
 $config['expiration']   = 300;                   //验证码超时

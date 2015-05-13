@@ -23,11 +23,15 @@ class m_user extends m_base
 
         $user = NULL;
 
-        //获得角色列表
-
-        //判断是否拥有合法的角色
-
         //获得用户数据
+        if (FALSE != $data)
+        {
+            $info = $this->edb->select_row('user_info', '`uid` = "' . $uid . '"');
+
+            //获得角色列表
+
+            //判断是否拥有合法的角色
+        }
 
         return $user != NULL;
     }

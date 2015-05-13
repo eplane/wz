@@ -120,7 +120,7 @@ $autoload['config'] = array('config_external');
 |
 */
 
-$autoload['language'] = array('error', 'form');
+$autoload['language'] = array('error');
 
 
 /*
