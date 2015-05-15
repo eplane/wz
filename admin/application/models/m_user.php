@@ -29,6 +29,10 @@ class m_user extends m_base
             $info = $this->edb->select_row('user_info', '`uid` = "' . $uid . '"');
 
             //获得角色列表
+            $this->load->model('m_role', 'mrole');
+            $roles = $this->mrole->gets($info['role']);
+
+            var_dump($roles);
 
             //判断是否拥有合法的角色
         }
