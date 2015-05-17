@@ -9,6 +9,15 @@ class Login extends CI_Controller
         $this->load->model('m_user', 'muser');
     }
 
+    public function t()
+    {
+        $this->load->model('m_role', 'mrole');
+
+        $r  =$this->mrole->gets('1,2');
+
+        var_dump($r);
+    }
+
     public function index()
     {
         $this->load->helper(array('form', 'url'));

@@ -10,13 +10,13 @@
         <title><?php echo $html_title;?></title>
 
         <!-- bootstrap 3.0.2 -->
-        <link href="<?php echo css_path(); ?>bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo get_path('css'); ?>bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- font Awesome -->
-        <link href="<?php echo css_path(); ?>font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo get_path('css'); ?>font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Ionicons -->
-        <link href="<?php echo css_path(); ?>ionicons.min.css" rel="stylesheet" type="text/css" />        
+        <link href="<?php echo get_path('css'); ?>ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
-        <link href="<?php echo css_path(); ?>AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo get_path('css'); ?>AdminLTE.css" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,13 +26,13 @@
         <![endif]-->
 
         <!-- jQuery 2.1.3 -->
-        <script src="<?php echo js_path(); ?>jquery-2.1.3.min.js"></script>
+        <script src="<?php echo get_path('js'); ?>jquery-2.1.3.min.js"></script>
         <!-- jQuery UI 1.10.3 -->
-        <script src="<?php echo js_path(); ?>jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+        <script src="<?php echo get_path('js'); ?>jquery-ui-1.10.3.min.js" type="text/javascript"></script>
         <!-- Bootstrap -->
-        <script src="<?php echo js_path(); ?>bootstrap.min.js" type="text/javascript"></script>       
+        <script src="<?php echo get_path('js'); ?>bootstrap.min.js" type="text/javascript"></script>
         <!-- AdminLTE App -->
-        <script src="<?php echo js_path(); ?>AdminLTE/app.js" type="text/javascript"></script>
+        <script src="<?php echo get_path('js'); ?>AdminLTE/app.js" type="text/javascript"></script>
         
     </head>
     <body class="skin-blue">
@@ -55,14 +55,14 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
-                                <span><?php  echo $_user['nickname'];?><i class="caret"></i></span>
+                                <span><?php  echo $_SESSION['me']['nick'];?><i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-                                    <img src="<?php echo efile_get_img($_user['avatar']); ?>" class="img-circle" alt="User Image" onclick="javascript:window.location.href='<?php echo base_url();?>admin/user/me.html';" style="cursor:pointer;"/>
+                                    <img src="<?php echo get_file($_SESSION['me']['avatar'], get_path('common-img').'avatar.jpg'); ?>" class="img-circle" alt="User Image" onclick="javascript:window.location.href='<?php echo base_url();?>admin/user/me.html';" style="cursor:pointer;"/>
                                     <p>
-                                        <?php echo $_user['name']; ?>                                        
+                                        <?php echo $_SESSION['me']['name']; ?>                                        
                                     </p>
                                 </li>
                                 
@@ -144,22 +144,7 @@
                             </ul>
                         </li>
 
-                        <?php foreach ($menu as $items):?>
-							
-							<li class="treeview active">
-	                            <a href="#">
-	                                <i class="fa <?php echo $items['icon'];?>"></i>
-	                                <span><?php echo $items['title'];?></span>
-	                                <i class="fa fa-angle-left pull-right"></i>
-	                            </a>
-	                            <ul class="treeview-menu">
-	                            	<?php foreach ($items['items'] as $name=>$url):?>
-	                                <li><a href="<?php echo $url;?>"><i class="fa fa-angle-double-right"></i><?php echo $name;?></a></li>
-	                                <?php endforeach;?>
-	                            </ul>
-                        	</li>
 
-                        <?php endforeach;?>
                         
                         
 

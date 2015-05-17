@@ -28,14 +28,17 @@ class m_role extends m_base
     {
         $data = [];
 
-        if(FALSE === is_string($roles))
+        if (is_string($roles))
         {
-            $roles = explode(' ', $roles);
+            $roles = explode(',', $roles);
         }
 
-        foreach($roles as $row)
+        foreach ($roles as $row)
         {
-            $data = [] = $this->get($row);
+            $role = $this->get($row);
+
+            if (!!$role)
+                $data[] = $role;
         }
 
         return $data;

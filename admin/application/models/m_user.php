@@ -9,35 +9,38 @@ class m_user extends m_base
         parent::__construct();
     }
 
-    /**
+    /** 用户登录
      * @param $uid
      * @param $password
      * @return bool
      */
     public function login_admin($uid, $password)
     {
-        /*
-         * 获得用户数据，不能使用缓存数据
-         * */
+        //获得用户数据，不能使用缓存数据
         $data = $this->edb->select_row('user', '`uid` = "' . $uid . '" AND `psw` = "' . md5($password) . '" AND `status`="normal"', '`id`,`uid`,`email`,`mobile`,`status`');
-
-        $user = NULL;
 
         //获得用户数据
         if (FALSE != $data)
         {
-            $info = $this->edb->select_row('user_info', '`uid` = "' . $uid . '"');
+            $info = $this->edb->select_row('user_info', '`id` = "' . $data['id'] . '"');
 
             //获得角色列表
             $this->load->model('m_role', 'mrole');
-            $roles = $this->mrole->gets($info['role']);
+            $roles['role'] = $this->mrole->gets($info['role']);
 
-            var_dump($roles);
+            $data = array_merge($data, $info, $roles);
+
+            //建立session
+            $_SESSION['me'] = $data;
 
             //判断是否拥有合法的角色
+            if (count($roles['role']) > 0)
+            {
+                return TRUE;
+            }
         }
 
-        return $user != NULL;
+        return FALSE;
     }
 
     public function get_user($refresh, $id)
@@ -52,47 +55,5 @@ class m_user extends m_base
         }
         else
             return NULL;
-    }
-
-    public function save($id, $data)
-    {
-        $login['mobile'] = $data['mobile'];
-        $login['email'] = $data['email'];
-
-        $this->edb->update('user', $login, '`id` = ' . $id);
-
-        $info['name'] = $data['name'];
-        $info['nickname'] = $data['nickname'];
-        $info['sex'] = $data['sex'];
-        $info['birthday'] = $data['birthday'];
-
-        if (isset($data['avatar']))
-        {
-            $info['avatar'] = $data['avatar'];
-
-            $old_avatar = $this->session->user['avatar'];
-
-            if ($old_avatar != '')
-            {
-                $this->load->library('Efile');
-                $this->efile->delete($old_avatar);
-            }
-        }
-
-        $this->edb->update('user_info', $info, '`id` = ' . $id);
-
-        $this->session->user = $this->get_user(TRUE, $id);
-    }
-
-    public function search($str)
-    {
-        $id = $this->edb->select_one('user', '`uid`="' . $str . '" OR `mobile`="' . $str . '" OR `email`="' . $str . '"', 'id');
-
-        return $this->get_user(FALSE, $id);
-    }
-
-    public function roles($user)
-    {
-
     }
 }

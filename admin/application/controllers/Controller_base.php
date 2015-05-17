@@ -7,8 +7,18 @@ class Controller_base extends CI_Controller
         parent::__construct();
     }
 
+    protected function is_login()
+    {
+        return isset($_SESSION['me']) && !!$_SESSION['me'];
+    }
+
     protected function view($page, $data)
     {
+        if(FALSE == isset($data['html_title']))
+        {
+            $data['html_title'] = $this->config->item('title');
+        }
+
         if (!!$page)
             $data['page'] = $this->load->view($page, $data, TRUE);
 
