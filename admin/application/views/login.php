@@ -10,13 +10,13 @@
     <title><?php echo $tab_title; ?></title>
 
     <!-- bootstrap 3.0.2 -->
-    <link href="<?php echo base_url() . get_path('common-css'); ?>bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="<?php echo get_path('common-css'); ?>bootstrap.css" rel="stylesheet" type="text/css"/>
     <!-- font Awesome -->
-    <link href="<?php echo base_url() . get_path('css'); ?>font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="<?php echo get_path('css'); ?>font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <!-- Theme style -->
-    <link href="<?php echo base_url() . get_path('css'); ?>AdminLTE.css" rel="stylesheet" type="text/css"/>
+    <link href="<?php echo get_path('css'); ?>AdminLTE.css" rel="stylesheet" type="text/css"/>
 
-    <link href="<?php echo base_url() . get_path('js'); ?>plugins/easyform/easyform.css" rel="stylesheet"
+    <link href="<?php echo get_path('js'); ?>plugins/easyform/easyform.css" rel="stylesheet"
           type="text/css"/>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -55,14 +55,14 @@
 </div>
 
 <!-- jQuery 2.1.3 -->
-<script src="<?php echo base_url() . get_path('common-js'); ?>jquery-2.1.3.min.js"></script>
+<script src="<?php echo get_path('common-js'); ?>jquery-2.1.3.min.js"></script>
 <!-- Bootstrap -->
-<script src="<?php echo base_url() . get_path('common-js'); ?>bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo get_path('common-js'); ?>bootstrap.min.js" type="text/javascript"></script>
 
-<!--<script src="<?php /*echo base_url() . get_path('common-js'); */?>jquery.language/jquery.language.js"
+<!--<script src="<?php /*echo get_path('common-js'); */?>jquery.language/jquery.language.js"
         type="text/javascript"></script>-->
 
-<script src="<?php echo base_url() . get_path('js'); ?>plugins/easyform/easyform.js" type="text/javascript"></script>
+<script src="<?php echo get_path('js'); ?>plugins/easyform/easyform.js" type="text/javascript"></script>
 
 <script>
 
@@ -74,7 +74,7 @@
         /*var lang = $.prototype.easylanguage({
             language: "ch",
             page: "login",
-            url: "<?php echo base_url() . get_path('common-js'); ?>jquery.language/",
+            url: "<?php echo get_path('common-js'); ?>jquery.language/",
 
             success: function (data) {
                 $uid = $("#uid");

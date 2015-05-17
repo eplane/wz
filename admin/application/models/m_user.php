@@ -14,7 +14,7 @@ class m_user extends m_base
      * @param $password
      * @return bool
      */
-    public function login_admin($uid, $password)
+    public function login($uid, $password)
     {
         //获得用户数据，不能使用缓存数据
         $data = $this->edb->select_row('user', '`uid` = "' . $uid . '" AND `psw` = "' . md5($password) . '" AND `status`="normal"', '`id`,`uid`,`email`,`mobile`,`status`');
@@ -41,6 +41,11 @@ class m_user extends m_base
         }
 
         return FALSE;
+    }
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
     }
 
     public function get_user($refresh, $id)

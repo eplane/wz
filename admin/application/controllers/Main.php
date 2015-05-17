@@ -11,8 +11,9 @@ class Main extends Controller_base
 
     public function index()
     {
-        $data['title'] = '主页';
-        $data['sub_title'] = '主页';
+        //路径导航条数据
+        $data['nav'] = ['主页'=>'main.html', '主页1'=>''];
+
         $this->view('main', $data);
     }
 }

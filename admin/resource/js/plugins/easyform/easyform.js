@@ -957,6 +957,7 @@
 //easyimagefile 图片文件上传
 //TODO 替换内容的方式有问题，应该换成更好的html
 //TODO 不能缓存提交一个默认值，在修改内容的时候，不能保持过去的值
+//TODO 默认空白图片不对，可以考虑不使用img控件
 (function ($, window, document, undefined) {
     var _easyimagefile = function (input, opt) {
         this.input = input;
@@ -970,7 +971,7 @@
         this.last_file = null;
 
         this.defaults = {
-            "default":""
+            "default":"http://localhost/wz/admin/resource/js/plugins/easyform/none.png"
         };
 
         this.options = $.extend({}, this.defaults, opt);
@@ -980,8 +981,15 @@
 
         init: function () {
             var style = this.input.attr('style');
-            var eif = this;
+            var $this = this;
             var src = this.input.attr('src');
+
+            if( !src || src.length == 0 )
+            {
+                src = $this.options.default;
+            }
+
+
             var sclass = this.input.attr('class');
 
             var tip_text = this.input.attr('title');
@@ -989,18 +997,22 @@
             if (!tip_text) tip_text = "";
 
             this.input.css("position", "relative");
-            var $this = this;
 
-            var file = "<input type='file' name='" + eif.fileid + "'  id='" + eif.fileid + "' style='display:none;'>";
-            var img = "<img src='" + src + "' name='" + eif.imgid + "'  id='" + eif.imgid + "' style='" + style + ";cursor:pointer;' class='" + sclass + "'>";
-            var tip = "<div id='" + eif.tipid + "' style='display:none; position:absolute;top:0;left:0;width:100%;height:100%;background-color:#000;text-align:center;cursor:pointer;-moz-opacity: 0.6; opacity:0.6; filter: alpha(opacity=60);color:#fff;padding-top:20%;'>" + tip_text +
-                "<div id='" + eif.delid + "' style='position:absolute;top:5px;right:5px;display:block;' class='easyform-close'></div>" +
+            var x = this.input.position().left;
+            var y = this.input.position().top;
+            var w = this.input.outerWidth();
+            var h = this.input.outerHeight();
+
+            var file = "<input type='file' name='" + $this.fileid + "'  id='" + $this.fileid + "' style='display:none;'>";
+            var img = "<img src='" + src + "' name='" + $this.imgid + "'  id='" + $this.imgid + "' style='" + style + ";cursor:pointer;' class='" + sclass + "'>";
+            var tip = "<div id='" + $this.tipid + "' style='display:none; position:absolute;top:"+y+"px;left:"+x+"px;width:"+w+"px;height:"+h+"px;background-color:#000;text-align:center;cursor:pointer;-moz-opacity: 0.6; opacity:0.6; filter: alpha(opacity=60);color:#fff;padding-top:20%;'>" + tip_text +
+                "<div id='" + $this.delid + "' style='position:absolute;top:5px;right:5px;display:block;' class='easyform-close'></div>" +
                 "</div>";
 
             this.input.replaceWith(file + img + tip);
 
-            var imgobj = $("#" + eif.imgid);
-            var fileobj = $("#" + eif.fileid);
+            var imgobj = $("#" + $this.imgid);
+            var fileobj = $("#" + $this.fileid);
 
             var disabled = this.input.attr('disabled');
 
@@ -1009,24 +1021,24 @@
                     fileobj.click();
                 });
 
-                $("#" + eif.imgid+", #"+eif.tipid).hover(function (e) {
-                    $("#" + eif.tipid).show();
+                $("#" + $this.imgid+", #"+$this.tipid).hover(function (e) {
+                    $("#" + $this.tipid).show();
                 }, function (e) {
-                    $("#" + eif.tipid).hide();
+                    $("#" + $this.tipid).hide();
                 });
 
-                $("#" + eif.tipid).click(function () {
+                $("#" + $this.tipid).click(function () {
                     fileobj.click();
                 });
 
-                $("#" + eif.delid).click(function (e) {
+                $("#" + $this.delid).click(function (e) {
                     e.stopPropagation();
                     imgobj.attr("src", $this.options.default);
                     fileobj.val("");    //TODO 删除已选择的文件，未经测试。
                 });
 
-                $("#" + eif.fileid).change(function () {
-                    eif._onchange();
+                $("#" + $this.fileid).change(function () {
+                    $this._onchange();
                 });
             }
 
@@ -1077,10 +1089,10 @@
 
             $("#" + old).replaceWith(file);
 
-            var eif = this;
+            var $this = this;
 
             $("#" + this.fileid).change(function () {
-                eif._onchange();
+                $this._onchange();
             });
         },
 
@@ -1090,6 +1102,7 @@
     };
 
     $.fn.easyimagefile = function (options) {
+
         var eif = new _easyimagefile(this, options);
 
         return eif.init();

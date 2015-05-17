@@ -5,6 +5,11 @@ class Controller_base extends CI_Controller
     function __construct()
     {
         parent::__construct();
+
+        if(FALSE == $this->is_login())
+        {
+            redirect(base_url() . 'login.html');
+        }
     }
 
     protected function is_login()
