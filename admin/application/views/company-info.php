@@ -1,6 +1,6 @@
 <?php echo validation_errors('<span class="text-red">','</span>'); ?>
+<?php //echo validation_errors('<div class="callout callout-danger" style="margin: 0;">', '</div>'); ?>
 <?php echo form_open(base_url().'admin/company.html', Array('enctype'=>'multipart/form-data'));?>
-<form>
 	<div class="form-horizontal">
 	<div class="box box-primary">
 		<div class="box-header"><i class="fa fa-user"></i><h3 class="box-title">公司信息</h3></div>
@@ -9,16 +9,17 @@
 			<div  class="form-group">
 			<div class="col-md-2">
 				<label>Logo </label><br>
-				<div style="width:116px;height:116px;border:1px solid #ccc;" id="logo" name="logo" src=""></div>
+				<!--<div style="width:116px;height:116px;border:1px solid #ccc;" id="logo" name="logo" src=""></div>-->
+                <img src="" id="logo" name="logo" style="width:116px;height:116px;border:1px solid #ccc;" title="Logo">
 			</div>
 
 			<div class="col-md-6">
 				<label for="name">公司名称 </label>
 				<input type="text" id="name" name="name" class="form-control" placeholder="公司名称">
-			
+
 				<label for="address" style="margin-top:15px;">公司地址 </label>
-				<input type="text" id="address" name="address" class="form-control" placeholder="公司地址">				
-			</div>			
+				<input type="text" id="address" name="address" class="form-control" placeholder="公司地址">
+			</div>
 			</div>
 
 			<div  class="form-group">
@@ -50,9 +51,9 @@
 				<div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                     <input id="tel2" name="tel2" class="form-control" placeholder="联系电话" type="text">
-                </div>				
+                </div>
 			</div>
-			</div>		
+			</div>
 
 
 			<div class="form-group">
@@ -88,8 +89,8 @@
 				<label>公司详细位置</label>
 				<input type="hidden" id="longitude" name="longitude" value="">
 				<input type="hidden" id="latitude" name="latitude" value="">
-				
-				<div id="map" style="width:100%;height:400px;border:1px solid #ccc;"></div>				
+
+				<div id="map" style="width:100%;height:400px;border:1px solid #ccc;"></div>
 			</div>
 			</div>
 
@@ -103,6 +104,7 @@
 	</div>
 	</div>
 </form>
+
 <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ea421ffdd24384e1d12898abaad605da"></script>
 <script type="text/javascript">
 
@@ -119,16 +121,16 @@
 	        //设置地图显示的缩放级别
 	        view: new AMap.View2D({
 	            center: position,
-	            zoom: 16 
+	            zoom: 16
 	        })
 	    });
 
 		//地标
 	    var customMarker = new AMap.Marker({
-				map:map,				
+				map:map,
 				icon:new AMap.Icon({  //复杂图标
 					size:new AMap.Size(20,32),//图标大小
-					image:"<?php echo img_path();?>admin/location.png", //大图地址
+					image:"<?php echo get_path('img');?>location.png", //大图地址
 					imageOffset:new AMap.Pixel(0,0)//相对于大图的取图位置
 				})
 		});
@@ -142,10 +144,12 @@
 			$("#longitude").val(e.lnglat.lng);
 			$("#latitude").val(e.lnglat.lat);
 		});
-		
+
 </script>
 
- <script src="<?php echo js_path(); ?>easyform.js" type="text/javascript"></script>
+<script src="<?php echo  get_path('js'); ?>plugins/easyform/easyform.js" type="text/javascript"></script>
+<link href="<?php echo  get_path('js'); ?>plugins/easyform/easyform.css" rel="stylesheet" type="text/css"/>
+
 
  <script type="text/javascript">
 
