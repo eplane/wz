@@ -16,26 +16,16 @@ class m_user extends m_base
      */
     public function login($uid, $password)
     {
-        //获得用户数据，不能使用缓存数据
-        $data = $this->edb->select_row('user', '`uid` = "' . $uid . '" AND `psw` = "' . md5($password) . '" AND `status`="normal"', '`id`,`uid`,`email`,`mobile`,`status`');
-
         //获得用户数据
-        if (FALSE != $data)
+        $user = $this->get_user($uid, TRUE);
+
+        if (password_verify($password, $user['password']))
         {
-            $info = $this->edb->select_row('user_info', '`id` = "' . $data['id'] . '"');
-
-            //获得角色列表
-            $this->load->model('m_role', 'mrole');
-            $roles['role'] = $this->mrole->gets($info['role']);
-
-            $data = array_merge($data, $info, $roles);
-
-            //建立session
-            $_SESSION['me'] = $data;
-
             //判断是否拥有合法的角色
-            if (count($roles['role']) > 0)
+            if (count($user['role']) > 0)
             {
+                //建立session
+                $_SESSION['me'] = $user;
                 return TRUE;
             }
         }
@@ -48,15 +38,35 @@ class m_user extends m_base
         $this->session->sess_destroy();
     }
 
-    public function get_user($refresh, $id)
+    public function get($id, $refresh = FALSE)
     {
         if (!!$id)
         {
-            $login = $this->edb->get_one($refresh, 'user', '`id` = ' . $id, '`id`,`uid`,`email`,`mobile`,`status`');
+            $login = $this->edb->get_one($refresh, 'user', '`id` = ' . $id);
 
             $info = $this->edb->get_one($refresh, 'user_info', '`id` = ' . $id);
 
-            return array_merge($login, $info);
+            //获得角色
+            $this->load->model('m_role', 'mrole');
+            $roles['role'] = $this->mrole->gets($info['role'], TRUE, $refresh);
+
+            $data = array_merge($login, $info, $roles);
+
+            return $data;
+        }
+        else
+            return NULL;
+    }
+
+    public function get_id($uid, $refresh = FALSE)
+    {
+        if (!!$uid)
+        {
+
+            $id = $this->edb->select_one('user', '`uid`="' . $uid . '"', '`id`');
+
+
+            return $id;
         }
         else
             return NULL;
