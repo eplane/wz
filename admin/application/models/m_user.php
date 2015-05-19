@@ -17,7 +17,8 @@ class m_user extends m_base
     public function login($uid, $password)
     {
         //获得用户数据
-        $user = $this->get_user($uid, TRUE);
+        $id = $this->get_id($uid);
+        $user = $this->get($id, TRUE);
 
         if (password_verify($password, $user['password']))
         {
@@ -62,9 +63,10 @@ class m_user extends m_base
     {
         if (!!$uid)
         {
+            $id = $this->edb->get_one($refresh, 'user', '`uid`="' . $uid . '"', '`id`');
 
-            $id = $this->edb->select_one('user', '`uid`="' . $uid . '"', '`id`');
-
+            if( $id != FALSE )
+                $id = $id['id'];
 
             return $id;
         }

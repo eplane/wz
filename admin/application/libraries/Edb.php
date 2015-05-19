@@ -215,7 +215,7 @@ class Edb
         {
             $data = $this->select($table, $where, $column, $order, $count, $start);
 
-            $CI->cache->set($key, $data, $CI->config->item('data_timeout'));
+            $CI->cache->save($key, $data, $CI->config->item('data_timeout'));
         });
 
         return $data;
