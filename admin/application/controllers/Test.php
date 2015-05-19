@@ -37,6 +37,8 @@ class Test extends CI_Controller
 
         var_dump($this->cache->get_metadata('aa'));
 
+        $this->cache->save('ddd',1);
+
         $r = $this->cache->get('bbb', function ($id)
             {
                 echo $id;
