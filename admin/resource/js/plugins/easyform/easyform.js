@@ -392,7 +392,7 @@
                 //如果长度设置为 length:6 这样的格式
                 if (range.length == 1) range[1] = range[0];
 
-                var len = v.replace(/[^\x00-\xff]/g,"aa").length;
+                var len = v.replace(/[^\x00-\xff]/g, "aa").length;
 
                 if (len < range[0] || len > range[1])
                     return ei._error("length");
@@ -463,22 +463,17 @@
                 var range = p.split(" ");
 
                 //如果长度设置为 length:6 这样的格式
+                //必须定义整数和小数的位数
                 if (range.length != 2)
                     return ei._error("float");
 
-                var value = v.split(".");
+                var pattern = new RegExp("^([1-9][\\d]{0," + range[0] + "}|0)(\\.[\\d]{1," + range[1] + "})?$");
 
-                if (value.length != 2 && value.length != 1)
+                if (false == pattern.test(v))
                     return ei._error("float");
 
-                if (value[0].length > range[0]
-                    || (!!value.length == 2 && value[1].length > range[1])) {
-                    return ei._error("float");
-                }
                 else
                     return ei._success_rule("float");
-
-                //return ei._error("float");
             },
 
             "uint": function (ei, v, p) {
@@ -510,11 +505,12 @@
 })(jQuery, window, document);
 
 //easytip
+//tip = $("#bt-submit").easytip()
 (function ($, window, document, undefined) {
     var themes = {
         black: {
             color: "rgba(238,238,238,1)",
-            "background-color": "rgba(75,75,75,0.8",
+            "background-color": "rgba(75,75,75,0.8)",
             "border": "1px solid rgba(75,75,75,1)",
             "border-radius": 5
         },
@@ -794,7 +790,6 @@
 //easyimagefile 图片文件上传
 //TODO 替换内容的方式有问题，应该换成更好的html
 //TODO 不能缓存提交一个默认值，在修改内容的时候，不能保持过去的值
-//TODO 默认空白图片不对，可以考虑不使用img控件
 (function ($, window, document, undefined) {
     var _easyimagefile = function (input, opt) {
         this.input = input;
@@ -808,7 +803,8 @@
         this.last_file = null;
 
         this.defaults = {
-            "default":"http://localhost/wz/admin/resource/js/plugins/easyform/none.png"
+            "default": "",
+            "type": "jpg|png"
         };
 
         this.options = $.extend({}, this.defaults, opt);
@@ -818,14 +814,13 @@
 
         init: function () {
             var style = this.input.attr('style');
-            var $this = this;
+            var eif = this;
             var src = this.input.attr('src');
 
-            if( !src || src.length == 0 )
-            {
-                src = $this.options.default;
-            }
-
+            if (!src || src.length < 4)
+                src = eif.options.default;
+            else
+                eif.options.default = src;
 
             var sclass = this.input.attr('class');
 
@@ -834,22 +829,18 @@
             if (!tip_text) tip_text = "";
 
             this.input.css("position", "relative");
+            var $this = this;
 
-            var x = this.input.position().left;
-            var y = this.input.position().top;
-            var w = this.input.outerWidth();
-            var h = this.input.outerHeight();
-
-            var file = "<input type='file' name='" + $this.fileid + "'  id='" + $this.fileid + "' style='display:none;'>";
-            var img = "<img src='" + src + "' name='" + $this.imgid + "'  id='" + $this.imgid + "' style='" + style + ";cursor:pointer;' class='" + sclass + "'>";
-            var tip = "<div id='" + $this.tipid + "' style='display:none; position:absolute;top:"+y+"px;left:"+x+"px;width:"+w+"px;height:"+h+"px;background-color:#000;text-align:center;cursor:pointer;-moz-opacity: 0.6; opacity:0.6; filter: alpha(opacity=60);color:#fff;padding-top:20%;'>" + tip_text +
-                "<div id='" + $this.delid + "' style='position:absolute;top:5px;right:5px;display:block;' class='easyform-close'></div>" +
+            var file = "<input type='file' name='" + eif.fileid + "'  id='" + eif.fileid + "' style='display:none;'>";
+            var img = "<img src='" + src + "' name='" + eif.imgid + "'  id='" + eif.imgid + "' style='" + style + ";cursor:pointer;' class='" + sclass + "'>";
+            var tip = "<div id='" + eif.tipid + "' style='display:none; position:absolute;top:0;left:0;width:100%;height:100%;background-color:#000;text-align:center;cursor:pointer;-moz-opacity: 0.6; opacity:0.6; filter: alpha(opacity=60);color:#fff;padding-top:20%;'>" + tip_text +
+                "<div id='" + eif.delid + "' style='position:absolute;top:5px;right:5px;display:block;' class='easyform-close'></div>" +
                 "</div>";
 
             this.input.replaceWith(file + img + tip);
 
-            var imgobj = $("#" + $this.imgid);
-            var fileobj = $("#" + $this.fileid);
+            var imgobj = $("#" + eif.imgid);
+            var fileobj = $("#" + eif.fileid);
 
             var disabled = this.input.attr('disabled');
 
@@ -858,24 +849,24 @@
                     fileobj.click();
                 });
 
-                $("#" + $this.imgid+", #"+$this.tipid).hover(function (e) {
-                    $("#" + $this.tipid).show();
+                $("#" + eif.imgid + ", #" + eif.tipid).hover(function (e) {
+                    $("#" + eif.tipid).show();
                 }, function (e) {
-                    $("#" + $this.tipid).hide();
+                    $("#" + eif.tipid).hide();
                 });
 
-                $("#" + $this.tipid).click(function () {
+                $("#" + eif.tipid).click(function () {
                     fileobj.click();
                 });
 
-                $("#" + $this.delid).click(function (e) {
+                $("#" + eif.delid).click(function (e) {
                     e.stopPropagation();
                     imgobj.attr("src", $this.options.default);
                     fileobj.val("");    //TODO 删除已选择的文件，未经测试。
                 });
 
-                $("#" + $this.fileid).change(function () {
-                    $this._onchange();
+                $("#" + eif.fileid).change(function () {
+                    eif._onchange();
                 });
             }
 
@@ -886,6 +877,9 @@
             var file = $("#" + this.fileid)[0];
             var img_file = "";
             var imgobj = $("#" + this.imgid);
+
+
+            this._type();
 
             this.last_file = imgobj.attr("src");
 
@@ -905,7 +899,7 @@
                     imgobj[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_file;
                 }
                 catch (e) {
-                    alert("The file is not image! Please change another one!");
+                    alert("请选择一个图片文件!");
                     return false;
                 }
 
@@ -919,17 +913,36 @@
             }
         },
 
+        _type: function () {
+
+            var file = $("#" + this.fileid)[0];
+
+            var filename = file.value;
+
+            //获得扩展名
+            var ext = filename.substr(filename.lastIndexOf(".") + 1).toLowerCase();
+
+            if (-1 == this.options.type.indexOf(ext)) {
+                alert("请选择一个" + this.options.type + "文件!");
+                this.reset();
+            }
+        },
+
         reset: function () {
+
+            //imgobj.attr("src", $this.options.default);
+            //fileobj.val("");    //TODO 删除已选择的文件，未经测试。
+
             var old = this.fileid;
 
             var file = "<input type='file' name='" + this.fileid + "'  id='" + this.fileid + "' style='display:none;' >";
 
             $("#" + old).replaceWith(file);
 
-            var $this = this;
+            var eif = this;
 
             $("#" + this.fileid).change(function () {
-                $this._onchange();
+                eif._onchange();
             });
         },
 
@@ -939,7 +952,6 @@
     };
 
     $.fn.easyimagefile = function (options) {
-
         var eif = new _easyimagefile(this, options);
 
         return eif.init();
